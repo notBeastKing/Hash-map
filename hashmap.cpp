@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// doubly linked list CLASS
 class DLL
 {
     public:
@@ -14,25 +15,27 @@ class DLL
         DLL *prev;
 };
 
+// Creating an array of DLL to store HASH table
 DLL** ind = new DLL*[N];
-int count = 0;
+int count = 0; // to maintain the no of values in a hash table
 
+// the data type for a hash table
 class HASH
 {
     public:
-    string KEY, VALUE;
-    int INKEY;
+    string KEY, VALUE; // key value pair
+    int INKEY; // the index in which the values has to be sotred in 
 
-    HASH(string KEY, string VALUE)
+    HASH(string KEY, string VALUE) // constructor
     {
         this->KEY = KEY;
-        this->VALUE = VALUE; //VALUE
-        this->INKEY = hashcode(KEY); //ind KEY
+        this->VALUE = VALUE;
+        this->INKEY = hashcode(KEY); //creating the index value
         cout<<KEY<<" "<<VALUE<<"\n";
         collisions();
     }
 
-    int gen_key(string keey)
+    int gen_key(string keey) // simple hash function to generate the index value
     {
         int res = 0;
         for(int i = 0; keey[i] != '\0'; i++)
@@ -42,7 +45,7 @@ class HASH
         return res;
     }
 
-    int hashcode( string msg)
+    int hashcode( string msg) // converting a string to an integer for generation of index value
     {
         int k = gen_key(msg);
         int key = k%N;
@@ -50,9 +53,9 @@ class HASH
         return key;
     }
 
-    void collisions()
+    void collisions() // inserting into the hash table and managing collisions, collisions are managed by creating linked lists on the same index
     {
-        if(ind[INKEY] != NULL)
+        if(ind[INKEY] != NULL) // if there's already a value at the index then theres a collision
         {
             printf("Collision found \n");
 
@@ -94,7 +97,7 @@ class HASH
 
     friend ostream& operator<<(ostream &out, const HASH &var);
 
-    void DELETE()
+    void DELETE() // since we are using dynamic memeory allocation important to free up all the memory
     {
         DLL* cur , *temp;
         for(int i = 0 ; i < N; i++)
